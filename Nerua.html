@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Neura | لوحة العرض التفاعلية</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eef1f7;--panel:#fff;--ink:#14172b;--mut:#5b6079;--line:#d9ddea;--a:#5b3df5;--b:#00a88f;--c:#e8590c;--code:#10132a;--codeink:#d6dbff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0c0e1d;--panel:#161a33;--ink:#eef0ff;--mut:#9aa1c7;--line:#2a2f54;--a:#8b79ff;--b:#2ed3b7;--c:#ff8a4c;--code:#0a0c1a}}
+:root[data-theme="dark"]{--bg:#0c0e1d;--panel:#161a33;--ink:#eef0ff;--mut:#9aa1c7;--line:#2a2f54;--a:#8b79ff;--b:#2ed3b7;--c:#ff8a4c;--code:#0a0c1a}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Tajawal,Tahoma,sans-serif;line-height:1.7}
+.wrap{max-width:1180px;margin:0 auto;padding:20px 16px 40px}
+.hero{background:linear-gradient(135deg,#2a1b8f,#5b3df5 55%,#00a88f);color:#fff;border-radius:28px;padding:34px 30px;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between}
+.hero h1{margin:0;font-size:clamp(40px,7vw,72px);font-weight:900;letter-spacing:2px;line-height:1.1;direction:ltr}
+.hero p{margin:6px 0 0;font-size:clamp(15px,2.2vw,20px);opacity:.92;max-width:560px}
+.hero .en{direction:ltr;font-weight:500;opacity:.8;font-size:15px}
+.btns{display:flex;gap:10px;flex-wrap:wrap}
+button{font:inherit;cursor:pointer}
+.btn{background:#fff;color:#2a1b8f;border:0;border-radius:999px;padding:12px 24px;font-weight:700;font-size:16px}
+.btn.g{background:transparent;color:#fff;border:1.5px solid #fff8}
+.btn:focus-visible,.tile:focus-visible,.x:focus-visible{outline:3px solid var(--c);outline-offset:3px}
+.hint{color:var(--mut);text-align:center;margin:18px 0 14px;font-size:15px}
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
+.tile{grid-column:span 4;background:var(--panel);border:1.5px dashed var(--line);border-radius:22px;padding:18px 18px 16px;text-align:right;color:inherit;transition:transform .2s,border-color .2s,border-style .2s;display:flex;flex-direction:column;gap:8px;min-height:170px}
+.tile:hover{transform:translateY(-4px);border-color:var(--a);border-style:solid}
+.tile.w{grid-column:span 8}
+.ic{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;font-size:24px;background:color-mix(in srgb,var(--col) 16%,transparent)}
+.tile h3{margin:0;font-size:20px}.tile p{margin:0;color:var(--mut);font-size:14.5px;flex:1}
+.tag{font-size:13px;color:var(--col);font-weight:700;display:flex;justify-content:space-between}
+.mini{display:flex;gap:4px;align-items:flex-end;height:34px}.mini i{flex:1;border-radius:4px 4px 0 0;background:var(--col);opacity:.75}
+@media(max-width:900px){.tile,.tile.w{grid-column:span 6}}@media(max-width:600px){.tile,.tile.w{grid-column:span 12}}
+.ov{position:fixed;inset:0;background:#05061488;backdrop-filter:blur(6px);display:none;z-index:50;padding:max(12px,env(safe-area-inset-top,0px)) 12px max(12px,env(safe-area-inset-bottom,0px))}
+.ov.on{display:grid;place-items:center}
+.pn{background:var(--panel);border-radius:26px;width:min(980px,100%);max-height:100%;overflow:auto;display:flex;flex-direction:column;animation:z .38s cubic-bezier(.2,.9,.3,1.1);transform-origin:var(--o,50% 50%)}
+@keyframes z{from{transform:scale(.25);opacity:0}to{transform:none;opacity:1}}
+@media(prefers-reduced-motion:reduce){.pn{animation:none}.tile{transition:none}}
+.ph{position:sticky;top:0;background:var(--panel);padding:18px 24px;display:flex;align-items:center;gap:14px;border-bottom:1.5px dashed var(--line);z-index:2}
+.ph h2{margin:0;font-size:clamp(20px,3.4vw,30px);flex:1}.ph small{color:var(--mut);display:block;font-size:13px;direction:ltr;text-align:right}
+.x{border:0;background:var(--bg);color:var(--ink);width:42px;height:42px;border-radius:50%;font-size:20px}
+.pb{padding:22px 24px;display:grid;gap:18px}
+.pf{display:flex;justify-content:space-between;align-items:center;padding:14px 24px;border-top:1.5px dashed var(--line);gap:10px;flex-wrap:wrap;position:sticky;bottom:0;background:var(--panel)}
+.pf button{background:var(--a);color:#fff;border:0;border-radius:999px;padding:9px 20px;font-weight:700}
+.pf .t{color:var(--mut);font-size:14px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}@media(max-width:700px){.two{grid-template-columns:1fr}}
+.card{background:var(--bg);border-radius:18px;padding:16px 18px}.card h4{margin:0 0 6px;font-size:17px}.card p,.card li{margin:0;color:var(--mut);font-size:15px}.card ul{margin:0;padding-inline-start:20px}
+.lead{font-size:18px;margin:0}
+pre{direction:ltr;text-align:left;background:var(--code);color:var(--codeink);border-radius:16px;padding:14px 16px;margin:0;overflow-x:auto;font-size:13.5px;line-height:1.6;font-family:ui-monospace,Consolas,monospace}
+.lab{font-weight:700;font-size:14px;margin-bottom:6px;display:block}
+.bar{display:grid;grid-template-columns:130px 1fr 54px;gap:10px;align-items:center;margin:8px 0;font-size:14px}
+.bar div{height:20px;background:var(--bg);border-radius:10px;overflow:hidden;direction:ltr}.bar div b{display:block;height:100%;border-radius:10px;background:var(--col,var(--a));width:0;transition:width 1s .15s}
+.bar span:last-child{font-weight:700;direction:ltr;text-align:left}
+.donut{width:190px;height:190px;border-radius:50%;margin:auto;position:relative}
+.donut:after{content:"";position:absolute;inset:34px;border-radius:50%;background:var(--panel)}
+.leg{display:grid;gap:6px;font-size:15px}.leg i{display:inline-block;width:12px;height:12px;border-radius:4px;margin-inline-end:8px}
+.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch}
+.st{flex:1 1 130px;border:1.5px solid var(--line);border-radius:16px;padding:12px;text-align:center;cursor:pointer;background:var(--panel);font:inherit;color:inherit}
+.st.on,.st:hover{border-color:var(--a);background:color-mix(in srgb,var(--a) 10%,var(--panel))}
+.st b{display:block;direction:ltr}.st small{color:var(--mut)}
+.det{background:var(--bg);border-radius:16px;padding:14px 18px;min-height:64px}
+table{border-collapse:collapse;width:100%;font-size:14.5px;min-width:560px}th,td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:right}th{background:var(--bg)}td.n{color:var(--a);font-weight:700}
+.sc{overflow-x:auto}
+.tl{display:grid;gap:0;position:relative;padding-inline-start:30px}.tl:before{content:"";position:absolute;inset-inline-start:11px;top:8px;bottom:8px;width:2px;background:var(--line)}
+.tl div{position:relative;padding:8px 0}.tl div:before{content:"";position:absolute;inset-inline-start:-26px;top:16px;width:14px;height:14px;border-radius:50%;background:var(--a);border:3px solid var(--panel)}
+.tl b{display:block}.tl span{color:var(--mut);font-size:14.5px}
+.big{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}@media(max-width:700px){.big{grid-template-columns:1fr}}
+.big div{text-align:center;background:var(--bg);border-radius:18px;padding:16px}.big strong{font-size:34px;color:var(--a);display:block;line-height:1.2;direction:ltr}
+.tg{position:fixed;inset-inline-start:14px;bottom:max(14px,env(safe-area-inset-bottom,0px));background:var(--panel);border:1px solid var(--line);color:var(--ink);border-radius:50%;width:44px;height:44px;z-index:10}
+:root{--pb:#dce7f6}@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--pb:#10142d}}:root[data-theme="dark"]{--pb:#10142d}
+.hero,.hint,.grid{display:none}
+.poster{background:var(--pb);border-radius:26px;padding:18px;display:grid;grid-template-columns:1fr 2.1fr 1fr;gap:14px}
+.cl{display:flex;flex-direction:column;gap:12px}.cl>.bt{flex:1}
+.bt{background:var(--panel);border:2px dashed color-mix(in srgb,var(--col,var(--a)) 65%,transparent);border-radius:24px;padding:14px 16px;text-align:center;color:inherit;transition:transform .2s,box-shadow .2s;font:inherit}
+.bt h3{margin:0;color:var(--col);font-size:18px}.bt small{display:block;color:var(--col);direction:ltr;font-weight:700;opacity:.85;font-size:13px}.bt p{margin:6px 0 0;color:var(--mut);font-size:14px}
+.bt:hover{transform:scale(1.03);border-style:solid;box-shadow:0 8px 24px #0003}.bt:focus-visible{outline:3px solid var(--c);outline-offset:3px}
+.ban{background:linear-gradient(90deg,#2a1b8f,#5b3df5 60%,#00a88f);color:#fff;border-radius:999px;text-align:center;padding:14px;font-size:clamp(22px,3.4vw,34px);font-weight:900;letter-spacing:1px}
+.ttl{text-align:center;line-height:1.6}.ttl b{color:var(--a);font-size:19px}.ttl span{color:var(--mut);display:block;font-size:15px}
+.r2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.gr{display:flex;gap:22px;align-items:center;justify-content:center;flex-wrap:wrap;margin-top:10px}.gr .donut{margin:0;width:140px;height:140px}.gr .donut:after{inset:26px}
+.vb{display:flex;gap:16px;align-items:flex-end;height:120px;direction:ltr;border-bottom:2px solid var(--line);padding:0 8px}.vb div{display:flex;gap:3px;align-items:flex-end;height:100%}.vb i{width:14px;border-radius:3px 3px 0 0}
+.bt pre{font-size:12px;margin-top:8px;padding:10px 12px}
+.note{background:linear-gradient(90deg,#00a88f,#5b3df5);color:#fff;border-radius:22px;padding:14px 18px;display:flex;gap:10px;justify-content:space-between;align-items:center;flex-wrap:wrap;font-weight:700}
+.note .btn{padding:8px 22px}
+@media(max-width:900px){.poster{grid-template-columns:1fr}.poster .cc{order:-1}.r2{grid-template-columns:1fr}}
+.poster{display:none}
+.wrap{max-width:1560px;padding:14px 10px 40px}
+.tb{width:71.43%;margin:0 auto;background:var(--panel);border-radius:26px 26px 0 0;padding:clamp(18px,3vw,38px) 24px;text-align:center;position:relative;z-index:3;box-shadow:0 -6px 30px #0001;border-bottom:4px solid var(--a)}
+.tb .en{direction:ltr;color:var(--b);font-weight:700;font-size:clamp(14px,1.5vw,19px)}.tb h1{margin:2px 0;font-size:clamp(44px,8vw,104px);font-weight:900;letter-spacing:4px;direction:ltr;line-height:1.05;background:linear-gradient(90deg,#2a1b8f,#5b3df5 55%,#00a88f);-webkit-background-clip:text;background-clip:text;color:transparent}
+.tb p{margin:6px auto 0;font-size:clamp(16px,2vw,25px);font-weight:700;max-width:800px}.tb small{display:block;color:var(--mut);font-size:clamp(13px,1.3vw,17px);margin-top:6px}
+.logo{display:block;margin:0 auto 10px;height:clamp(80px,13vw,170px);width:auto;max-width:90%}
+.tri{display:grid;grid-template-columns:35fr 70fr 35fr;perspective:2600px;perspective-origin:50% 0}
+.pnl{background:var(--panel);padding:clamp(12px,1.6vw,24px);display:flex;flex-direction:column;gap:clamp(12px,1.4vw,20px);box-shadow:0 26px 50px #0003;min-height:1100px;position:relative}
+.pnl.c{z-index:2;box-shadow:0 26px 50px #0002,0 0 0 1px var(--line)}
+.pnl.wr{transform-origin:left center;transform:rotateY(-5deg);background:linear-gradient(90deg,var(--panel),var(--panel) 85%,color-mix(in srgb,var(--panel) 92%,#000))}
+.pnl.wl{transform-origin:right center;transform:rotateY(5deg)}
+.bk{border:2.5px dashed color-mix(in srgb,var(--col) 60%,transparent);border-radius:26px;padding:clamp(14px,1.6vw,24px);background:var(--panel);cursor:pointer;transition:transform .2s,box-shadow .2s,border-color .2s;flex:1;display:flex;flex-direction:column;gap:6px}
+.bk:hover{transform:scale(1.025);border-style:solid;border-color:var(--col);box-shadow:0 10px 30px #0002}.bk:focus-visible{outline:3px solid var(--c);outline-offset:3px}
+.bk h3{margin:0;color:var(--col);font-size:clamp(20px,2vw,28px);line-height:1.3}.bk small{color:var(--col);direction:ltr;text-align:right;font-weight:700;opacity:.85;font-size:clamp(12px,1.1vw,15px)}
+.bk p{margin:4px 0;color:var(--ink);font-size:clamp(15px,1.45vw,19px)}.bk ul,.bk ol{margin:0;padding-inline-start:22px;color:var(--mut);font-size:clamp(14px,1.3vw,17px)}.bk li{margin:3px 0}
+.bk em{margin-top:auto;font-style:normal;font-size:13px;color:var(--col);opacity:.8;padding-top:6px}
+.r2{display:grid;grid-template-columns:1fr 1fr;gap:clamp(12px,1.4vw,20px)}
+.chs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px}.chs div{background:var(--bg);border-radius:14px;padding:8px 12px}.chs b{display:block;direction:ltr;text-align:right;color:var(--ink);font-size:clamp(15px,1.4vw,18px)}.chs span{font-size:clamp(12px,1.1vw,15px);color:var(--mut)}
+.cd{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px}.cd pre{font-size:clamp(11px,1.05vw,14px)}.cd b{font-size:14px;color:var(--mut);display:block;margin-bottom:4px}
+.gr2{display:flex;gap:clamp(14px,3vw,40px);align-items:center;justify-content:center;flex-wrap:wrap;margin:8px 0}.gr2 .donut{margin:0;width:clamp(130px,15vw,210px);height:clamp(130px,15vw,210px)}
+.vb2{display:flex;gap:clamp(14px,2vw,28px);align-items:flex-end;height:clamp(130px,14vw,190px);direction:ltr;border-bottom:2px solid var(--line);padding:0 10px}.vb2>div{display:flex;flex-direction:column;align-items:center;height:100%;justify-content:flex-end}.vb2 .g{display:flex;gap:4px;align-items:flex-end;flex:1}.vb2 i{width:clamp(14px,1.7vw,24px);border-radius:4px 4px 0 0}.vb2 span{font-size:12px;color:var(--mut)}
+.lg{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;font-size:14px;color:var(--mut)}.lg i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-inline-end:5px}
+.note2{background:linear-gradient(90deg,#00a88f,#5b3df5);color:#fff;border-radius:24px;padding:16px 22px;display:flex;gap:12px;justify-content:space-between;align-items:center;flex-wrap:wrap;font-weight:700;font-size:clamp(15px,1.6vw,21px)}.note2 .btn{padding:10px 26px}
+@media(max-width:1000px){.tri{grid-template-columns:1fr;perspective:none}.pnl{min-height:0}.pnl.wr,.pnl.wl{transform:none}.pnl.c{order:-1}.tb{width:100%}.r2,.cd{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+ <header class="hero">
+  <div><div class="en">AI-Native Programming Language</div><h1>NEURA</h1><p>لغة برمجة للذكاء الاصطناعي: اكتب النموذج، ونيورا تتولى التنفيذ والتحسين.</p></div>
+  <div class="btns"><button class="btn" id="go">ابدأ العرض</button><button class="btn g" id="rnd">تصفح الأقسام</button></div>
+ </header>
+ <p class="hint">اضغط على أي قسم ليتكبّر. استخدم الأسهم ← → للتنقل و Esc للإغلاق.</p>
+ <main class="grid" id="grid"></main><section class="poster" id="board"></section>
+</div>
+<button class="tg" id="tg" aria-label="تبديل الوضع الليلي">◐</button>
+<div class="ov" id="ov" role="dialog" aria-modal="true"><div class="pn" id="pn"></div></div>
+<script>
+const bar=(a,col)=>a.map(([l,v,m,u])=>`<div class="bar" style="--col:${col||'var(--a)'}"><span>${l}</span><div><b data-w="${v/m*100}"></b></div><span>${v}${u||''}</span></div>`).join('');
+const pie=[['إعداد البيانات',30,'#5b3df5'],['تحسين الأداء يدوياً',25,'#e8590c'],['إدارة الذاكرة والأجهزة',20,'#00a88f'],['تصميم النموذج',25,'#f2b705']];
+let g=0;const cg=pie.map(p=>{const s=g;g+=p[1];return `${p[2]} ${s}% ${g}%`}).join(',');
+const steps=[['Neura Source','الكود','يكتب المطور النموذج بصياغة بسيطة قريبة من Python، بلا أي ذكر للذاكرة أو الأجهزة.'],['Parser','المحلّل','Lexer ثم Parser يبنيان شجرة (AST)، ثم فاحص الأنواع (Type Checker) وفاحص الملكية (Ownership Checker) يتحققان من الأنواع وأشكال المصفوفات (Shapes) مبكراً قبل التشغيل.'],['Tensor IR','التمثيل الوسيط','أربع طبقات تمثيل وسيط: NIR ثم TIR ثم ADIR (الاشتقاق التلقائي بالنمط العكسي) ثم EIR (للتنفيذ).'],['Optimizer','المحسّن','تمرّات تحسين على LM ضمن محرك NAOE: الرسم البياني، دمج العمليات (Kernel Fusion)، الذاكرة، الدقة، اختيار الجهاز، والضبط التلقائي (Autotuning).'],['Codegen','التوليد','LLM لكود CPU الأصلي، و CUDA/ROCm لمعالجات الرسوميات حسب الجهاز المتوفر. الإصدار 0.1.0 ينفّذ حالياً على آلة EIR الافتراضية مع Kernels أصلية بـ Rust.'],['Runtime','وقت التشغيل','Runtime مكتوب بـ Rust: آلة EIR الافتراضية، محرك Autograd، الطبقات والمُحسّنات، ومُحلّل الأداء (Profiler).']];
+const S=[
+{i:'⚠️',t:'المشكلة',e:'The Problem',c:'#e8590c',m:2,s:'مطور الذكاء الاصطناعي يقضي وقتاً طويلاً خارج بناء النموذج نفسه.',mini:[30,25,20,25],
+ h:()=>`<p class="lead">Python سهلة، لكن الأداء والتحسين يُدفعان إلى المطور أو إلى مكتبات خارجية.</p>
+ <div class="two"><div class="card"><h4>أين يذهب وقت المطور؟</h4><div class="donut" style="background:conic-gradient(${cg})"></div><div class="leg" style="margin-top:12px">${pie.map(p=>`<span><i style="background:${p[2]}"></i>${p[0]} ${p[1]}%</span>`).join('')}</div><p style="margin-top:8px;font-size:12.5px">أرقام توضيحية لتقريب الفكرة وليست نتيجة دراسة.</p></div>
+ <div class="card"><h4>التحديات الأساسية</h4><ul><li>أداء Python الأصلي محدود دون مكتبات مسرّعة.</li><li>إدارة ذاكرة GPU معقدة ومصدر أخطاء.</li><li>دمج Kernels وتحسين Tensor يحتاج خبرة نادرة.</li><li>نقل المشروع بين CPU وGPU وأنواعهما يتطلب تعديلات.</li></ul></div></div>
+ <div class="card"><h4>النتيجة</h4><p>فرق صغيرة وطلاب وباحثون يخسرون وقتاً في التفاصيل الهندسية بدل الابتكار في النماذج.</p></div>`},
+{i:'💡',t:'الحل',e:'The Solution',c:'#5b3df5',m:2,s:'اكتب النموذج فقط. الذاكرة والتحسين واختيار الجهاز مسؤولية اللغة.',mini:[10,45,25,40],
+ h:()=>`<p class="lead">Neura تجعل التحسين جزءاً من اللغة نفسها، لا من مسؤولية المطور.</p>
+ <div class="two"><div><span class="lab">الطريقة التقليدية: تفاصيل كثيرة</span><pre>x = x.to(device)       # اختيار الجهاز
+buf = cuda.alloc(n)    # ذاكرة يدوية
+y = matmul(x, W)       # Kernel 1
+y = add(y, b)          # Kernel 2
+y = gelu(y)            # Kernel 3
+cuda.free(buf)</pre></div>
+ <div><span class="lab">مع Neura: النية فقط</span><pre>model = nn.Sequential([
+  nn.Linear(2, 8),
+  nn.ReLU(),
+  nn.Linear(8, 3)
+])
+optimizer = optim.Adam(model.parameters(), learning_rate=0.05)
+model.train(train, epochs=20, batch_size=8, optimizer=optimizer)</pre></div></div>
+ <div class="two"><div class="card"><h4>ما الذي تفعله Neura تلقائياً؟</h4><ul><li>إدارة الذاكرة</li><li>دمج العمليات المتوافقة</li><li>اختيار CPU أو GPU</li><li>حساب الـ Gradients</li></ul></div><div class="card"><h4>ما الذي يبقى للمطور؟</h4><p>تصميم النموذج، اختيار البيانات، وتفسير النتائج. هذا هو العمل الإبداعي الفعلي.</p></div></div>`},
+{i:'⚙️',t:'كيف تعمل',e:'Architecture',c:'#00a88f',m:2.5,s:'من الكود إلى Native Code عبر Tensor IR وLM وLLM.',mini:[20,30,40,50,60,70],
+ h:()=>`<p class="lead">ست مراحل. اضغط على أي مرحلة لتعرف ماذا يحدث فيها.</p><div class="flow" id="fl">${steps.map((s,k)=>`<button class="st${k?'':' on'}" data-k="${k}"><b>${s[0]}</b><small>${s[1]}</small></button>`).join('')}</div><div class="det" id="dt"><b>${steps[0][1]}:</b> ${steps[0][2]}</div>
+ <div class="card"><h4>التقنيات المستخدمة</h4><div class="sc"><table><tr><th>التقنية</th><th>دورها</th></tr><tr><td>Rust</td><td>المترجم والـ Runtime بأمان ذاكرة عالٍ</td></tr><tr><td>LM</td><td>تمثيل وسيط وتحسين عمليات المصفوفات (يُصدَّر نصياً عبر neura graph)</td></tr><tr><td>LLM</td><td>توليد كود الآلة الأصلي</td></tr><tr><td>NAOE</td><td>محرك التحسين: دمج، ذاكرة، دقة، جهاز، ضبط تلقائي</td></tr><tr><td>CUDA / ROCm</td><td>دعم معالجات NVIDIA وAMD (واجهات في 0.1.0)</td></tr><tr><td>Autograd</td><td>اشتقاق تلقائي عكسي للتدريب</td></tr><tr><td>npack</td><td>مدير حزم: npack.toml وnpack.lock وبناء واختبار</td></tr></table></div></div>
+ <div class="card"><h4>مسار الترجمة الفعلي (من المستودع)</h4><pre>source (.neura)
+  → lexer → parser → type checker → ownership checker
+  → NIR → TIR → ADIR → EIR
+  → NAOE optimisation
+  → CPU execution (VM + native tensor kernels)</pre></div>
+ <div class="two"><div class="card"><h4>أوامر neura</h4><ul><li><b style="direction:ltr;display:inline-block">neura check</b>: فحص الأنواع والملكية</li><li><b style="direction:ltr;display:inline-block">neura run</b>: ترجمة وتحسين وتنفيذ</li><li><b style="direction:ltr;display:inline-block">neura inspect</b>: الأنواع وتفكيك EIR</li><li><b style="direction:ltr;display:inline-block">neura graph</b>: TIR بصيغة LM نصية</li><li><b style="direction:ltr;display:inline-block">neura profile</b>: الزمن والذاكرة لكل عملية</li><li><b style="direction:ltr;display:inline-block">neura optimize-report</b>: قرارات NAOE قبل/بعد</li></ul></div><div class="card"><h4>المكتبة القياسية</h4><ul><li><b style="direction:ltr;display:inline-block">neura.tensor</b>: إنشاء، matmul، slicing، broadcasting، softmax</li><li><b style="direction:ltr;display:inline-block">neura.nn</b>: Linear وConv وLayerNorm وEmbedding وغيرها</li><li><b style="direction:ltr;display:inline-block">neura.optim</b>: SGD وAdam وAdamW وRMSProp</li><li><b style="direction:ltr;display:inline-block">neura.data</b>: CSV وbatching وshuffling</li><li><b style="direction:ltr;display:inline-block">neura.autograd</b>: backward وفحص التدرجات</li></ul></div></div>`,
+ after(){const f=document.getElementById('fl');f.onclick=e=>{const b=e.target.closest('.st');if(!b)return;f.querySelectorAll('.st').forEach(x=>x.classList.remove('on'));b.classList.add('on');const s=steps[b.dataset.k];document.getElementById('dt').innerHTML=`<b>${s[1]}:</b> ${s[2]}`}}},
+{i:'🧪',t:'النموذج الأولي',e:'Prototype Demo',c:'#e8590c',m:3,s:'مثال حي: دمج ثلاث عمليات في Kernel واحد يقلل حركة الذاكرة.',mini:[70,20],
+ h:()=>`<p class="lead">نثبت الفكرة بعملية واحدة شائعة: <b style="direction:ltr;display:inline-block">y = gelu(x @ W + b)</b></p>
+ <div class="two"><div class="card"><h4>بدون تحسين</h4><p>ثلاث عمليات منفصلة. كل واحدة تكتب نتيجتها في الذاكرة ثم تقرأها التالية.</p></div><div class="card"><h4>بعد التحسين</h4><p>تمرّ الدمج يحوّلها إلى Kernel واحد، والنتائج الوسيطة تبقى في السجلات.</p></div></div>
+ <div class="card"><h4>عمليات الذاكرة الوسيطة (مفهومياً)</h4>${bar([['بدون دمج',5,5,''],['مع الدمج',1,5,'']],'var(--c)')}<p style="font-size:12.5px">العدد نظري لهذه العملية، وسنقيس الزمن الفعلي في العرض المباشر ونعرض الفرق.</p></div>
+ <pre>// Neura IR  (قبل → بعد)
+%1 = tensor.matmul %x, %W
+%2 = tensor.add    %1, %b
+%3 = nn.gelu       %2
+        ⇓  fusion pass
+%y = fused.linear_gelu %x, %W, %b</pre>
+ <div class="two"><div><span class="lab">مثال حقيقي من المستودع: examples/autograd.neura</span><pre>x = Tensor([2.0], requires_grad=true)
+y = x * x + 3.0 * x
+y.backward()
+print(x.grad)   # Tensor[1](7.0)</pre></div><div><span class="lab">التشغيل</span><pre>cargo build --release
+./target/release/neura run examples/autograd.neura
+# Tensor[1](7.0)</pre></div></div>
+ <div class="card"><h4>خطوات العرض المباشر</h4><ul><li>تشغيل نفس الحساب مرتين: بدون التحسين ومعه (--opt=off مقابل --opt=auto).</li><li>عرض قرارات المحسّن بأمر neura optimize-report.</li><li>التأكد أن النتائج متطابقة رقمياً.</li><li>عرض الزمن المقاس لكل نسخة بجانب بعضهما.</li></ul></div>`},
+{i:'🛡️',t:'ما يميّزها',e:'Innovation',c:'#f2b705',m:1.5,s:'تحسين تلقائي، أمان ذاكرة، استقلال عن العتاد، وأداء أصلي.',mini:[50,50,50,50],
+ h:()=>`<div class="two"><div class="card"><h4>🚀 تحسين تلقائي للنماذج</h4><p>دمج العمليات وتخطيط الذاكرة يتم داخل المترجم بدل أن يكتبه المطور.</p></div><div class="card"><h4>🔒 أمان ذاكرة بأسلوب Rust</h4><p>Ownership وBorrowing تعمل في الخلفية، فتمنع تسرب الذاكرة وأخطاء الوصول بلا تعقيد على المستخدم.</p></div><div class="card"><h4>🔌 استقلال عن العتاد</h4><p>النموذج نفسه يعمل على CPU وGPU دون إعادة كتابة.</p></div><div class="card"><h4>⚡ أداء أصلي</h4><p>ترجمة إلى Native Code بدلاً من تفسير Python سطراً بسطر.</p></div></div>
+ <p class="lead">القيمة الأساسية: التحسين وإدارة الموارد جزء من تصميم اللغة، لا مكتبة إضافية.</p>`},
+{i:'📊',t:'المقارنة',e:'Comparison',c:'#5b3df5',m:2,s:'أين تقف Neura بين Python وRust.',mini:[60,80,90],
+ h:()=>`<div class="sc"><table><tr><th>الخاصية</th><th>Python</th><th>Rust</th><th>Neura</th></tr><tr><td>سهولة الاستخدام</td><td>عالية</td><td>متوسطة</td><td class="n">عالية</td></tr><tr><td>الأداء الأصلي</td><td>محدود دون مكتبات</td><td>عالٍ</td><td class="n">مستهدف عالٍ</td></tr><tr><td>إدارة الذاكرة</td><td>تلقائية</td><td>Ownership يدوي</td><td class="n">Ownership تلقائي</td></tr><tr><td>تحسين ML</td><td>عبر مكتبات</td><td>أدوات إضافية</td><td class="n">مدمج</td></tr><tr><td>دعم GPU</td><td>عبر مكتبات</td><td>أدوات خارجية</td><td class="n">مدمج (واجهات حالياً)</td></tr><tr><td>Autograd</td><td>عبر مكتبات</td><td>غير مدمج</td><td class="n">مدمج</td></tr></table></div>
+ <div class="card"><h4>تقييم تقريبي (من 5)</h4>${bar([['Python: سهولة',5,5,''],['Python: أداء أصلي',2,5,''],['Rust: سهولة',2.5,5,''],['Rust: أداء أصلي',5,5,''],['Neura: سهولة',5,5,''],['Neura: أداء (هدف)',4.5,5,'']],'var(--b)')}<p style="font-size:12.5px">تقييم نوعي للتوضيح وليس قياساً. وNeura الأداء فيها هدف تصميمي يُختبر بالنموذج الأولي.</p></div>`},
+{i:'🎯',t:'لمن تُستخدم',e:'Use Cases',c:'#00a88f',m:1.5,s:'الطلاب، الفرق الناشئة، والأجهزة محدودة الموارد.',mini:[40,70,55],
+ h:()=>`<div class="big"><div><strong>🎓</strong>الطلاب والباحثون<p style="margin:4px 0 0;color:var(--mut);font-size:14px">تجارب سريعة دون تعلّم CUDA.</p></div><div><strong>🚀</strong>الشركات الناشئة<p style="margin:4px 0 0;color:var(--mut);font-size:14px">أداء أفضل بفريق أصغر وتكلفة حوسبة أقل.</p></div><div><strong>📱</strong>الذكاء على الأجهزة<p style="margin:4px 0 0;color:var(--mut);font-size:14px">كود أصلي خفيف للأجهزة المحدودة.</p></div></div>
+ <div class="two"><div class="card"><h4>مثال: تصنيف الصور</h4><p>يكتب الطالب النموذج بعشرة أسطر، فتختار Neura الجهاز وتدمج الطبقات وتدرّب.</p></div><div class="card"><h4>مثال: تدريب على جهاز AMD</h4><p>الكود نفسه يعمل عبر ROCm دون تعديل، فتتحرر الفرق من الارتباط بمورّد واحد.</p></div></div>`},
+{i:'🗺️',t:'خارطة الطريق',e:'Roadmap',c:'#5b3df5',m:2,s:'ثماني مراحل من المترجم الأساسي إلى مكتبات التعلم الآلي.',mini:[15,25,35,45,55,65,75,85],
+ h:()=>`<div class="tl">${[['المترجم الأساسي','Lexer وParser وفحص الأنواع'],['إدارة الذاكرة','Ownership تلقائي'],['Tensor Engine','عمليات المصفوفات الأساسية'],['LM وLLM','التمثيل الوسيط وتوليد الكود'],['Automatic Differentiation','الاشتقاق التلقائي للتدريب'],['CPU وGPU Backends','CUDA وROCm'],['Optimization Engine','دمج وتحسين تلقائي متقدم'],['مكتبات ML','طبقات ومُحسّنات ونماذج جاهزة']].map(r=>`<div><b>${r[0]}</b><span>${r[1]}</span></div>`).join('')}</div>
+ <div class="card"><h4>أين وصل المشروع اليوم</h4><p>الإصدار 0.1.0 على GitHub يضم مترجماً كاملاً (Lexer، Parser، فحص الأنواع والملكية)، أربع طبقات IR، محرك NAOE، Autograd، محرك Tensor على CPU، مكتبة شبكات عصبية، وأدوات neura وnpack.</p></div>
+ <div class="card"><h4>ما نبنيه في الهاكاثون</h4><p>نختار شريحة رأسية رفيعة من المراحل 1 و3 و4 و7 تكفي لإثبات الفكرة بدل محاولة بناء اللغة كاملة.</p></div>`},
+{i:'🧱',t:'التحديات',e:'Risks',c:'#e8590c',m:2,s:'مخاطر واقعية وكيف نخفّفها.',mini:[60,45,70],
+ h:()=>`<div class="two"><div class="card"><h4>حجم المشروع</h4><p>بناء لغة كاملة ضخم. <b>الحل:</b> نموذج أولي يركّز على ثلاث أفكار فقط.</p></div><div class="card"><h4>منافسة الأطر الحالية</h4><p>PyTorch وJAX وMojo موجودة. <b>الحل:</b> التميز بجعل التحسين خاصية لغوية وليس مكتبة.</p></div><div class="card"><h4>دعم العتاد المتنوع</h4><p><b>الحل:</b> الاعتماد على LM وLLM بدل كتابة كل Backend من الصفر.</p></div><div class="card"><h4>اعتماد المجتمع</h4><p><b>الحل:</b> صياغة مألوفة لمستخدمي Python، وجسر لاستيراد النماذج الحالية.</p></div></div>
+ <div class="card"><h4>حدود الإصدار 0.1.0 (كما يوثّقها المستودع)</h4><ul><li>التنفيذ على مفسّر EIR مع Kernels أصلية بـ Rust، دون توليد كود LLM مرتبط بعد.</li><li>واجهات CUDA وROCm موجودة، لكن أي تشغيل عليها يعيد خطأ صريحاً بدل المحاكاة.</li><li>نظام الوحدات يغطي neura.* فقط، فلا استيراد من حزم npack الخارجية بعد.</li><li>لا Generics ولا Traits ولا Closures، ولا تنزيل حزم من سجل خارجي.</li></ul></div>`},
+{i:'🏁',t:'الخلاصة',e:'Takeaways',c:'#00a88f',m:2,s:'ثلاث أفكار يثبتها النموذج الأولي، وما بعدها.',mini:[80,80,80],
+ h:()=>`<p class="lead">Write the intelligence. Neura handles the execution.</p>
+ <div class="big"><div><strong>1</strong>صياغة Tensor بسيطة</div><div><strong>2</strong>تمثيل وسيط وتحسين تلقائي</div><div><strong>3</strong>تنفيذ ومقارنة الأداء</div></div>
+ <div class="two"><div class="card"><h4>الخطوات القادمة</h4><ul><li>توسيع تمرّات التحسين</li><li>إضافة Backend لـ GPU</li><li>مكتبة طبقات أولى</li></ul></div><div class="card"><h4>الرسالة الختامية</h4><p>إذا أصبح التحسين جزءاً من اللغة، سيركز المطور على الفكرة، وتتولى Neura الباقي.</p></div></div>`}
+];
+const G=document.getElementById('grid'),O=document.getElementById('ov'),P=document.getElementById('pn');
+S.forEach((s,k)=>{const b=document.createElement('button');b.className='tile'+(k==2||k==3?' w':'');b.style.setProperty('--col',s.c);
+b.innerHTML=`<div class="ic">${s.i}</div><h3>${s.t}</h3><p>${s.s}</p><div class="mini">${s.mini.map(h=>`<i style="height:${h}%"></i>`).join('')}</div><div class="tag"><span>${s.e}</span><span>⏱ ${s.m} د</span></div>`;
+b.onclick=()=>open(k,b);G.appendChild(b)});
+let cur=-1,tour=false;
+function open(k,src){cur=k;const s=S[k];if(src){const r=src.getBoundingClientRect();P.style.setProperty('--o',`${(r.left+r.width/2)/innerWidth*100}% ${(r.top+r.height/2)/innerHeight*100}%`)}
+P.style.animation='none';P.offsetWidth;P.style.animation='';
+P.innerHTML=`<div class="ph"><div class="ic" style="--col:${s.c}">${s.i}</div><h2>${s.t}<small>${s.e}</small></h2><button class="x" aria-label="إغلاق">✕</button></div><div class="pb">${s.h()}</div><div class="pf"><button data-d="1">${ORD.indexOf(k)<S.length-1?'التالي':'الأول'}</button><span class="t">${ORD.indexOf(k)+1} / ${S.length} · الوقت المقترح ${s.m} دقيقة</span><button data-d="-1">السابق</button></div>`;
+O.classList.add('on');document.body.style.overflow='hidden';P.scrollTop=0;
+requestAnimationFrame(()=>setTimeout(()=>P.querySelectorAll('[data-w]').forEach(e=>e.style.width=e.dataset.w+'%'),60));
+s.after&&s.after();P.querySelector('.x').focus()}
+function close(){O.classList.remove('on');document.body.style.overflow='';cur=-1}
+function go(d){open(ORD[(ORD.indexOf(cur)+d+ORD.length)%ORD.length])}
+P.onclick=e=>{if(e.target.closest('.x'))close();const b=e.target.closest('[data-d]');if(b)go(+b.dataset.d)};
+O.onclick=e=>{if(e.target===O)close()};
+const ORD=[0,1,4,2,7,3,10,11,5,6,8,9];
+S.push({i:'✅',t:'النتائج المتوقعة',e:'Expected Results',c:'#00a88f',m:1.5,s:'',mini:[],h:()=>`<p class="lead">الهدف أن يرى الحضور الفرق بأعينهم، لا أن يسمعوه فقط.</p><div class="big"><div><strong>✓</strong>كود Neura أقصر وأبسط</div><div><strong>✓</strong>تحسين يحدث دون تدخل المطور</div><div><strong>✓</strong>نتائج رقمية متطابقة</div></div><div class="card"><h4>الجهد البرمجي (توضيحي)</h4>${bar([['Python مع CUDA يدوي',40,40,' سطر'],['Neura',6,40,' سطر']],'var(--b)')}<p style="font-size:12.5px">تقدير توضيحي لمثال طبقة خطية وليس قياساً فعلياً.</p></div><div class="two"><div class="card"><h4>ما سنقيسه</h4><ul><li>زمن التنفيذ</li><li>عدد عمليات الذاكرة</li><li>عدد أسطر الكود</li><li>صحة النتائج مقارنة بالنسخة غير المحسّنة</li></ul></div><div class="card"><h4>معيار النجاح</h4><p>نفس المخرجات بزمن أقل وكود أبسط.</p></div></div>
+ <div class="card"><h4>جودة المشروع اليوم</h4><p>75 اختباراً آلياً تغطي المترجم والـ IR والمحسّن والـ Autograd والطبقات وأداة npack، مع اختبارات طرفية تشغّل ملف neura الحقيقي. ولا يعتمد البناء على أي مكتبة خارجية ولا على Python.</p></div>`},
+{i:'🔬',t:'تحليل الأداء',e:'Performance Analysis',c:'#5b3df5',m:1.5,s:'',mini:[],h:()=>`<p class="lead">كلما طالت سلسلة العمليات، زادت النتائج الوسيطة التي يوفّرها الدمج.</p><div class="card"><h4>نتائج وسيطة تُكتب في الذاكرة (نظرياً)</h4>${bar([['سلسلة من 2 عمليات',1,7,''],['سلسلة من 3',2,7,''],['سلسلة من 5',4,7,''],['سلسلة من 8',7,7,''],['بعد الدمج (أي سلسلة)',0,7,'']],'var(--c)')}</div><div class="sc"><table><tr><th>المقياس</th><th>بدون تحسين</th><th>مع Neura</th></tr><tr><td>زمن التنفيذ</td><td>سيُقاس</td><td>سيُقاس</td></tr><tr><td>عمليات الذاكرة</td><td>5</td><td>1</td></tr><tr><td>الدقة العددية</td><td colspan="2">يجب أن تتطابق النتيجتان</td></tr></table></div><div class="card"><h4>قياسات من المستودع (aarch64، نسخة release)</h4><div class="sc"><table><tr><th>العملية</th><th>الأداء المقاس</th></tr><tr><td>matmul 256³ f32</td><td>≈ 1.7 GFLOP/s</td></tr><tr><td>GELU على 1M عنصر</td><td>≈ 86 Melem/s</td></tr><tr><td>softmax 128×1000</td><td>≈ 98 Melem/s</td></tr><tr><td>conv2d 4×8×32×32</td><td>≈ 0.46 GFLOP/s</td></tr><tr><td>خطوة تدريب بـ 64 عينة</td><td>≈ 6.3k عينة/ث</td></tr></table></div><p style="font-size:12.5px">هذه Kernels مرجعية غير مُحسَّنة وليست أرقام BLAS تجارية، والقياس يتم وقت التشغيل ولا توجد أرقام ثابتة في الكود.</p></div><div class="card"><h4>كيف نقرأ النتائج</h4><p>نقارن الزمن عبر عدة تشغيلات ونأخذ المتوسط. إذا لم يظهر تحسن في حالة معينة، نذكر ذلك بصراحة ونشرح السبب.</p></div>`});
+const T={0:['المشكلة أو الهدف','Purpose','مطور الذكاء الاصطناعي يقضي وقته في الذاكرة والتحسين بدل بناء النموذج.'],1:['الفكرة والحل','Idea','لغة تجعل التحسين جزءاً منها: اكتب النموذج وNeura تنفّذه.'],4:['ما يميّزها','Innovation','تحسين تلقائي، أمان ذاكرة، استقلال عن العتاد، وأداء أصلي.'],8:['التحديات','Risks','حجم المشروع والمنافسة ودعم العتاد، ولكل تحدٍ خطة.'],10:['النتائج المتوقعة','Results','كود أبسط، تنفيذ أسرع، ونتائج متطابقة.'],9:['الاستنتاج','Conclusions','التحسين جزء من اللغة، والمطور يركز على الفكرة.'],6:['التطبيقات','Applications','الطلاب والباحثون، الشركات الناشئة، والأجهزة محدودة الموارد.'],2:['المواد: التقنيات','Materials','Rust وLM وLLM وCUDA وROCm وNAOE، ومسار الترجمة بست مراحل.'],7:['الإجراءات','Procedure','ثماني مراحل من المترجم الأساسي إلى مكتبات ML.'],3:['البيانات: النموذج الأولي','Data / Demo','عملية واحدة نشغّلها بنسختين ونقارن الزمن.'],11:['تحليل الأداء','Analysis','كيف نقيس الفرق ونقرأ النتائج بأمانة.']};
+const tl=k=>`<button class="bt" data-k="${k}" style="--col:${S[k].c}"><h3>${T[k][0]}</h3><small>${T[k][1]}</small><p>${T[k][2]}</p></button>`;
+document.getElementById('board').innerHTML=`<div class="cl">${[0,1,4,8].map(tl).join('')}</div><div class="cl cc"><div class="ban">NEURA | لوحة العرض</div><div class="ttl"><b>Project Topic · لغة برمجة أصيلة للذكاء الاصطناعي</b><span>Project Title · اكتب النموذج، ونيورا تتولى التنفيذ والتحسين</span></div><div class="r2">${tl(2)}${tl(7)}</div><button class="bt" data-k="3" style="--col:#e8590c"><h3>البيانات: النموذج الأولي</h3><small>Data / Demo</small><p>عملية واحدة نشغّلها بنسختين ونقارن الزمن.</p><pre>y = gelu(x @ W + b)   // 3 عمليات → Kernel واحد</pre></button><button class="bt" data-k="5" style="--col:#5b3df5"><h3>الرسوم البيانية</h3><small>Graphs</small><div class="gr"><div class="donut" style="background:conic-gradient(${cg})"></div><div class="vb">${[[80,45,30],[40,90,35],[65,30,70]].map(r=>`<div>${r.map((h,j)=>`<i style="height:${h}%;background:${['#5b3df5','#e8590c','#00a88f'][j]}"></i>`).join('')}</div>`).join('')}</div></div><p>مقارنة Python وRust وNeura. الأرقام توضيحية.</p></button>${tl(11)}<div class="note"><span>Write the intelligence. Neura handles the execution.</span><button class="btn" id="go2">ابدأ العرض</button></div></div><div class="cl">${[10,9,6].map(tl).join('')}</div>`;
+document.getElementById('board').onclick=e=>{const b=e.target.closest('[data-k]');if(b)open(+b.dataset.k,b)};
+document.getElementById('go2').onclick=e=>{e.stopPropagation();open(0,e.target)};
+document.documentElement.dataset.theme='light';
+const X={0:['المشكلة أو الهدف','Purpose','مطور الذكاء الاصطناعي يقضي وقتاً كبيراً في أمور لا علاقة لها بفكرة نموذجه.',['أداء Python الأصلي محدود دون مكتبات مسرّعة','إدارة ذاكرة GPU معقدة وتسبب أخطاء صعبة','دمج الـ Kernels وتحسين Tensor يحتاج خبرة نادرة','نقل المشروع بين CPU وGPU يتطلب تعديلات']],1:['الفكرة والحل','Idea','Neura لغة برمجة يكتب فيها المطور النموذج فقط، وتتولى اللغة تنفيذه وتحسينه.',['إدارة الذاكرة تلقائياً','دمج العمليات المتوافقة','اختيار CPU أو GPU حسب المتوفر','حساب الـ Gradients دون كود إضافي']],4:['ما يميّزها','Innovation','التحسين هنا خاصية في اللغة نفسها، وليس مكتبة يحتاج المطور أن يتقنها.',['تحسين تلقائي للنماذج','أمان ذاكرة بأسلوب Ownership وBorrowing','نفس الكود على أي عتاد','ترجمة إلى Native Code بدل التفسير','مترجم كامل بـ Rust بلا مكتبات خارجية ولا Python']],8:['التحديات','Risks','لكل تحدٍ خطة واضحة تقلل أثره.',['حجم المشروع: نموذج أولي بثلاث أفكار','منافسة PyTorch وJAX: التميز بالتحسين المدمج','حدود 0.1.0 موثقة بصراحة: GPU واجهات فقط','دعم عتاد متنوع: الاعتماد على LM وLLM','تبنّي المجتمع: صياغة مألوفة لمستخدمي Python']],10:['النتائج المتوقعة','Results','يخرج الحضور وقد شاهدوا الفرق بأنفسهم.',['كود Neura أقصر وأبسط','تنفيذ أسرع بعد الدمج التلقائي','نتائج رقمية متطابقة مع النسخة غير المحسّنة','قياس حقيقي لا ادعاءات','75 اختباراً آلياً تغطي المترجم والـ Autograd']],9:['الاستنتاج','Conclusions','إذا أصبح التحسين جزءاً من اللغة، ركّز المطور على الفكرة.',['نموذج أولي يثبت جدوى الفكرة','أساس قابل للتوسع إلى GPU ومكتبات ML','الخطوة التالية: توسيع تمرّات التحسين','الشيفرة مفتوحة على GitHub برخصة MIT']],6:['التطبيقات','Applications','لمن تفيد Neura في الواقع؟',['الطلاب والباحثون: تجارب سريعة دون تعلّم CUDA','الشركات الناشئة: فريق أصغر وتكلفة أقل','الذكاء على الأجهزة محدودة الموارد','الفرق التي تستخدم عتاداً من أكثر من مورّد']]};
+const bk=(k,x='')=>`<div class="bk" data-k="${k}" tabindex="0" role="button" style="--col:${S[k].c}"><h3>${X[k][0]}</h3><small>${X[k][1]}</small><p>${X[k][2]}</p><ul>${X[k][3].map(b=>`<li>${b}</li>`).join('')}</ul>${x}<em>⤢ اضغط للتكبير</em></div>`;
+const blk=(k,t,e,body)=>`<div class="bk" data-k="${k}" tabindex="0" role="button" style="--col:${S[k].c}"><h3>${t}</h3><small>${e}</small>${body}<em>⤢ اضغط للتكبير</em></div>`;
+const chs=[['Rust','المترجم والـ Runtime'],['LM','تحسين عمليات المصفوفات'],['LLM','كود الآلة الأصلي'],['Tensor IR','تمثيل العمليات'],['CUDA','معالجات NVIDIA'],['ROCm','معالجات AMD'],['NAOE','محرك التحسين'],['npack','مدير الحزم']];
+const pr=['المترجم الأساسي','إدارة الذاكرة','Tensor Engine','LM وLLM','الاشتقاق التلقائي','CPU وGPU','محرك التحسين','مكتبات ML'];
+const vb=[['سهولة',[90,45,90]],['أداء',[30,90,80]],['تحسين ML',[40,25,95]]];
+const LOGO='data:image/png;base64,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... (101 KB left)
